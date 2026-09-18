@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generator TTE & Barcode Pegawai</title>
+  <!-- Library Signature Pad, QRCode Styling, & html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="header">
+    <h2>Generator Tanda Tangan Elektronik & Barcode</h2>
+    <p>Aplikasi Pembuat TTE dengan QR Code Berlogo Instansi</p>
+  </div>
+
+  <div class="container">
+    <!-- KOLOM KIRI: FORM INPUT -->
+    <div class="card">
+      <h3>Data Pegawai</h3>
+      
+      <div class="form-group">
+        <label for="nama">Nama Pegawai</label>
+        <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+      </div>
+
+      <div class="form-group">
+        <label for="nip">NIP / ID Pegawai</label>
+        <input type="text" id="nip" placeholder="Masukkan NIP">
+      </div>
+
+      <div class="form-group">
+        <label for="jabatan">Jabatan</label>
+        <input type="text" id="jabatan" placeholder="Masukkan jabatan">
+      </div>
+
+      <div class="form-group">
+        <label>Pilih Instansi</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="instansi" value="kemensos" checked onchange="updateLogoPreview()">
+            Sentra "Bahagia" di Medan
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="instansi" value="sekolah_rakyat" onchange="updateLogoPreview()">
+            Sekolah Rakyat Menengah Pertama 2 Medan
+          </label>
+        </div>
+      </div>
+
+      <hr style="margin: 20px 0; border: none; border-top: 1px dashed #ddd;">
+
+      <h3>Tanda Tangan</h3>
+      
+      <div class="form-group">
+        <label>Opsi 1: Unggah Gambar TTD (PNG / JPG)</label>
+        <input type="file" id="upload-ttd" accept="image/*" onchange="handleUploadTTD(event)">
+      </div>
+
+      <div class="form-group">
+        <label>Opsi 2: Gambar TTD di bawah ini</label>
+        <div class="canvas-container">
+          <canvas id="signature-canvas"></canvas>
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="clearCanvas()">Hapus Coretan Canvas</button>
+      </div>
+
+      <button type="button" class="btn btn-primary" onclick="generateTTE()" style="width: 100%; margin-top: 10px;">
+        Generate TTE & QR Code
+      </button>
+    </div>
+
+    <!-- KOLOM KANAN: PRATINJAU & DOWNLOAD -->
+    <div class="card">
+      <h3>Pratinjau TTE</h3>
+      
+      <div id="preview-area">
+        <div id="tte-card-result" class="tte-card">
+          <div class="tte-header">
+            <h4 id="res-instansi">Sentra "Bahagia" di Medan</h4>
+            <p>Tanda Tangan Elektronik Terverifikasi</p>
+          </div>
+          
+          <div class="tte-body">
+            <div id="qrcode-box"></div>
+            <div class="tte-signature-box">
+              <img id="res-ttd" alt="Tanda Tangan">
+              <div class="tte-info">
+                <strong id="res-nama">-</strong><br>
+                <span>NIP: <span id="res-nip">-</span></span><br>
+                <span>Jabatan: <span id="res-jabatan">-</span></span><br>
+                <small id="res-waktu" class="timestamp"></small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-success" onclick="downloadTTE()" style="width: 100%; margin-top: 20px;">
+          Unduh TTD & QR Code (PNG)
+        </button>
+      </div>
+
+      <div id="empty-state">
+        <p style="color: #888; text-align: center; padding: 40px 0;">
+          Silakan isi form dan klik tombol <strong>Generate TTE & QR Code</strong> untuk melihat hasil.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
